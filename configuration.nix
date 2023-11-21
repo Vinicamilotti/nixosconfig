@@ -94,7 +94,8 @@
   pulseaudio
   git
   nodejs
-  python3
+  pkgs.playerctl
+  (pkgs.python3.withPackages(ps: with ps; [ pygobject3 gst-python papis-python-rofi spotipy appdirs ]))
   neofetch
   gnumake
   pkgs.go
@@ -136,8 +137,17 @@
   pkgs.desktop-file-utils
   feh
   spotify-cli-linux
+  pkgs.python311Packages.pip
+  mopidy
+  mopidy-spotify
+  mpc-cli
+  mpd
+  appimage-run
+  pamixer
+  gzip
+  unzip
+  zscroll
 ];
-  	
  
   #Config Hyprland
   xdg.portal.enable=true;
@@ -148,6 +158,19 @@
   programs.zsh.enable=true; 
   programs.thunar.enable = true;
 	
+  services.mopidy = {
+  enable = true;
+  extensionPackages = [ pkgs.mopidy-spotify pkgs.mopidy-mopify pkgs.mopidy-mpd];
+  configuration = ''
+    [spotify]
+    client_id = 9402f7fc-746f-4755-993a-387b95359cfb
+    client_secret = YwDwG_I7KfWGVgxs4o4yPU26ZSuOrjvgXrpj1-u4nRQ=
+    
+    [mpd]
+    hostname = ::
+  '';
+};
+
   services.gvfs.enable = true;
   services.xserver.displayManager.sddm.enable = true; #This line enables sddm
   services.xserver.enable = true; # Might need this for Xwayland  
